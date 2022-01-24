@@ -1,0 +1,15 @@
+{
+  "name": "band_names_server",
+  "version": "1.0.0",
+  "description": "Bakcend server for band names application in Flutter",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Jozek Andrzej Hajduk Sánchez <hajduksanchez.dev@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.2"
+  }
+}
