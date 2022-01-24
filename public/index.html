@@ -22,6 +22,15 @@
     socket.on('disconnect', () => {
       console.log('Disconnect from the server');
     });
+
+    // EMIT is for sending data to the server
+    socket.emit('message', {
+      name: 'Jozek',
+      text: 'Hello from client'
+    });
+    socket.on('message', (message) => {
+      console.log(message);
+    });
   </script>
 </body>
 
