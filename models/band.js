@@ -5,7 +5,8 @@ class Band {
     // We use the uuid library for create unique ID
     this.id = uuidv4()
     this.name = name
-    this.votes = 0
+    // Random number between 500 and 1000
+    this.votes = Math.floor(Math.random() * 501) + 500
   }
 }
 
