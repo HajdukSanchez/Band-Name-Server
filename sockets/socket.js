@@ -1,5 +1,5 @@
 const { io: server } = require('../index')
-const { ADD_BAND, ADD_VOTE, GET_BANDS } = require('../types/band.types')
+const { ADD_BAND, ADD_VOTE, GET_BANDS, DELETE_BAND } = require('../types/band.types')
 const { CONNECT, DISCONNECT } = require('../types/global.types')
 const Band = require('../models/band')
 const Bands = require('../models/bands')
@@ -31,6 +31,11 @@ server.on(CONNECT, (client) => {
 
   client.on(ADD_BAND, (payload) => {
     payload.votes ? bands.addBand(new Band(payload.name, payload.votes)) : bands.addBand(new Band(payload.name))
+    server.emit(GET_BANDS, bands.getBands())
+  })
+
+  client.on(DELETE_BAND, (payload) => {
+    bands.removeBand(payload.id) // Remove a band
     server.emit(GET_BANDS, bands.getBands())
   })
 })
