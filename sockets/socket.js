@@ -1,4 +1,6 @@
 const { io: server } = require('../index')
+const { ADD_BAND, ADD_VOTE, GET_BANDS } = require('../types/band.types')
+const { CONNECT, DISCONNECT } = require('../types/global.types')
 const Band = require('../models/band')
 const Bands = require('../models/bands')
 
@@ -10,20 +12,25 @@ bands.addBand(new Band('Deep Purple'))
 bands.addBand(new Band('Led Zeppelin'))
 
 // Socket messages
-server.on('connect', (client) => {
+server.on(CONNECT, (client) => {
   console.log(`Client connected`)
 
   // We send a message for a new client connected
-  client.emit('bands', bands.getBands())
+  client.emit(GET_BANDS, bands.getBands())
 
   // ON is for listening to the client
-  client.on('disconnect', () => {
+  client.on(DISCONNECT, () => {
     console.log('Client disconnected')
   }) // Callback qhen some client disconnect from the server
 
   // Event for add a Vote to specific band
-  client.on('vote-band', (payload) => {
+  client.on(ADD_VOTE, (payload) => {
     bands.voteBand(payload.id) // Add a vote to the band
-    server.emit('bands', bands.getBands()) // The server send all the bands again
+    server.emit(GET_BANDS, bands.getBands()) // The server send all the bands again
+  })
+
+  client.on(ADD_BAND, (payload) => {
+    payload.votes ? bands.addBand(new Band(payload.name, payload.votes)) : bands.addBand(new Band(payload.name))
+    server.emit(GET_BANDS, bands.getBands())
   })
 })
